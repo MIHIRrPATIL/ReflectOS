@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# Build and Output
+.next/
+out/
+build/
+dist/
+.cache/
+
+# Environment and Secrets
+.env
+.env.local
+credentials.json
+token.json
+.spotify_cache
+
+# OS/IDE
+.DS_Store
+.vscode/
+.idea/
+
+# ML Models and Large Binaries
+*.gguf
+*.pt
+*.bin
+*.onnx
+*.weights
+*.h5
+*.ckpt
+backend/ai/models/
+backend/ml/models/
+*.model
+
+# Logs
+*.log

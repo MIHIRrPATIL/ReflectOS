@@ -1,0 +1,17 @@
+mediapipe
+Flask
+flask-socketio
+opencv-python
+requests
+langgraph
+pyttsx3
+speechrecognition
+schedule
+pycaw
+comtypes
+llama-cpp-python
+langgraph-checkpoint-sqlite
+redis
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib

@@ -1,0 +1,273 @@
+/* --- Google Font (must be first) --- */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════
+   ReflectOS — HUD Design System
+   Pitch black. 1px white lines. Monospaced. Industrial.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --hud-bg: #000000;
+  --hud-fg: #ffffff;
+  --hud-fg-dim: rgba(255, 255, 255, 0.6);
+  --hud-fg-muted: rgba(255, 255, 255, 0.25);
+  --hud-accent: rgba(255, 255, 255, 0.12);
+  --hud-line: rgba(255, 255, 255, 0.8);
+  --hud-line-dim: rgba(255, 255, 255, 0.3);
+  --hud-success: #4ade80;
+  --hud-warning: #fbbf24;
+  --hud-error: #f87171;
+  --hud-font: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+  --dot-gap: 20px;
+  --dot-size: 1px;
+  --dot-opacity: 0.12;
+}
+
+@theme inline {
+  --color-background: var(--hud-bg);
+  --color-foreground: var(--hud-fg);
+  --font-mono: var(--hud-font);
+}
+
+/* ── Base ────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--hud-bg);
+  color: var(--hud-fg);
+  font-family: var(--hud-font);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Dot Grid Background ────────────────────────────────────── */
+
+.hud-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image: radial-gradient(circle,
+      rgba(255, 255, 255, var(--dot-opacity)) var(--dot-size),
+      transparent var(--dot-size));
+  background-size: var(--dot-gap) var(--dot-gap);
+  pointer-events: none;
+}
+
+/* ── Unclosed Frames (L-Bracket Corners) ─────────────────────── */
+
+.hud-frame {
+  position: relative;
+  padding: 16px;
+}
+
+.hud-frame::before,
+.hud-frame::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: var(--hud-line);
+  border-style: solid;
+  pointer-events: none;
+}
+
+/* Top-left corner */
+.hud-frame::before {
+  top: 0;
+  left: 0;
+  border-width: 1px 0 0 1px;
+}
+
+/* Bottom-right corner */
+.hud-frame::after {
+  bottom: 0;
+  right: 0;
+  border-width: 0 1px 1px 0;
+}
+
+/* Extra corners via a wrapper child */
+.hud-frame-inner::before,
+.hud-frame-inner::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: var(--hud-line);
+  border-style: solid;
+  pointer-events: none;
+}
+
+/* Top-right corner */
+.hud-frame-inner::before {
+  top: 0;
+  right: 0;
+  border-width: 1px 1px 0 0;
+}
+
+/* Bottom-left corner */
+.hud-frame-inner::after {
+  bottom: 0;
+  left: 0;
+  border-width: 0 0 1px 1px;
+}
+
+/* ── Chiseled Buttons (45° cuts) ─────────────────────────────── */
+
+.hud-btn {
+  font-family: var(--hud-font);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--hud-fg);
+  background: transparent;
+  border: 1px solid var(--hud-line);
+  padding: 8px 20px;
+  cursor: pointer;
+  clip-path: polygon(8px 0%, 100% 0%, 100% calc(100% - 8px),
+      calc(100% - 8px) 100%, 0% 100%, 0% 8px);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.hud-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.hud-btn:active {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.hud-btn--filled {
+  background: var(--hud-fg);
+  color: var(--hud-bg);
+}
+
+.hud-btn--filled:hover {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+/* ── Panel Header ────────────────────────────────────────────── */
+
+.hud-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--hud-fg-dim);
+}
+
+.hud-title {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--hud-fg);
+}
+
+/* ── Status Indicators ───────────────────────────────────────── */
+
+.hud-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--hud-fg);
+}
+
+.hud-dot--hollow {
+  background: transparent;
+  border: 1px solid var(--hud-fg);
+}
+
+.hud-dot--success {
+  background: var(--hud-success);
+}
+
+.hud-dot--warning {
+  background: var(--hud-warning);
+}
+
+/* ── Inputs ──────────────────────────────────────────────────── */
+
+.hud-input {
+  font-family: var(--hud-font);
+  font-size: 14px;
+  color: var(--hud-fg);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--hud-line-dim);
+  padding: 8px 0;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s ease;
+}
+
+.hud-input::placeholder {
+  color: var(--hud-fg-dim);
+}
+
+.hud-input:focus {
+  border-bottom-color: var(--hud-fg);
+}
+
+/* ── Divider (dashed) ────────────────────────────────────────── */
+
+.hud-divider {
+  border: none;
+  border-top: 1px dashed var(--hud-line-dim);
+  margin: 8px 0;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--hud-fg-dim);
+}
+
+/* ── Utility ─────────────────────────────────────────────────── */
+
+.fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.draw-in {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: drawIn 0.6s ease forwards;
+}
+
+@keyframes drawIn {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
