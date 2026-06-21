@@ -10,7 +10,7 @@ class LocalLLM:
     
     # Path to model relative to backend root or absolute
     # Adjust this path based on where the file actually is: backend/ai/models/phi/Phi-3-mini-q4.gguf
-    MODEL_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "ai", "models", "phi", "Phi-3-mini-q4.gguf")
+    MODEL_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "ai", "models", "phi", "Phi-3-mini-4k-instruct-q4.gguf")
 
     @classmethod
     def get_instance(cls):

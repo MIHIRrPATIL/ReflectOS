@@ -1,139 +1,137 @@
-# ReflectOS: The Intelligent Gesture-Driven HUD Operating System
+# 🪞 ReflectOS: The Intelligent Gesture-Driven HUD
 
-ReflectOS is a cutting-edge, AI-powered "Smart Mirror" and HUD (Heads-Up Display) platform. It eliminates traditional input methods like keyboards and mice, replacing them with **intuitive hand gestures** and **voice commands** to create a seamless, holographic-style user experience.
+[![Status](https://img.shields.io/badge/Status-Optimized-success?style=flat-square)](#)
+[![Stack](https://img.shields.io/badge/Stack-Next.js%20|%20LangGraph%20|%20MediaPipe-blue?style=flat-square)](#)
+[![AI](https://img.shields.io/badge/AI-Local%20Phi--3%20+%20Cloud%20Hybrid-orange?style=flat-square)](#)
+
+ReflectOS is a next-generation, AI-orchestrated **Smart Mirror / HUD** platform. Designed to eliminate traditional inputs, it leverages high-fidelity hand tracking, voice commands, and a distributed LangGraph brain to provide a seamless, holographic-style interface.
 
 ---
 
-## 🚀 Feature Deep Dive
+## ✨ Latest Enhancements
 
-### 🧠 AI Intelligence Layer (The "Brain")
-ReflectOS utilizes a LangGraph-powered reasoning engine that supports:
-*   **Intent Classification**: Advanced routing of requests using OpenRouter (Gemini/StepFun) with local fallback.
-*   **Contextual Memory**: Remembers personal facts and preferences (e.g., "Remember I like dark roast coffee").
-*   **Composite Task Execution**: Handles multiple independent actions in a single command (e.g., "Show my balance and play some jazz music").
-*   **Search & Knowledge**:
-    *   **Pro-Web Search**: Real-time web searching via Tavily and SerpApi for news, sports, and live data.
-    *   **Knowledge Scanner**: Integrated reticle for identifying objects and text via OCR and Object Detection.
+-   **🧘‍♂️ Zen Mode**: Toggled via the **Thumb Up** gesture to instantly declutter your display.
+-   **🗣️ Realistic Voice**: Integrated `edge-tts` (`en-US-ChristopherNeural`) for natural, human-like responses.
+-   **🚀 Local AI Fallback**: Deploying the **Phi-3-mini-4k** model locally to bypass API rate limits and ensure maximum privacy.
+-   **🛡️ Gesture Stability**: Re-engineered detection engine with **Prioritized Indexing** and **Sticky Locking** to eliminate false triggers.
 
-### 🖖 Gesture & Control (The "Input")
-*   **High-Precision Cursor**: Smooth, EMA-filtered cursor with interactive glow and click pulse.
-*   **Air Tap & Gun Tap**: Intuitive pinching and thumb-tapping for selection and menu control.
-*   **System Media Control**: Native OS volume and playback control via hand rotation and swipes.
-*   **HUD Menu Arc**: Draggable, semi-circular navigation fragments.
+---
 
-### 📺 HUD Modules (The "Interface")
-*   **Finance Terminal**: Detailed spending tracking, debt management ("who owes what"), and category-wise analysis.
-*   **Media Center**: Full Spotify integration (Playlists, Device Switching, Queue Management) and YouTube search/playback.
-*   **Timeline & Tasks**: Monospaced to-do lists and calendar management.
-*   **Vision Suite**:
-    *   **Style Scan**: AI fashion feedback based on your current outfit.
-    *   **Text Reader**: Instant OCR for reading physical documents.
-    *   **Object Identifier**: Deep-scene description and item detection.
-*   **System Diagnostics**: Terminal widget for logs and Process Monitor for AI execution tracking.
-*   **Biometric Mood**: Waveform visualization for mood and mental state tracking.
+## 🚀 Feature Set
 
-## 🏗️ System Architecture
+### 🖖 Interaction Layer
+-   **Hybrid Input**: Seamlessly switch between voice (wake word: "Alfred") and gestures.
+-   **Gesture Precision**: 
+    -   `AIR_TAP`: High-speed selection and clicking.
+    -   `GUN_TAP`: Thumb-trigger for menu navigation.
+    -   `VOLUME_DIAL`: Precise analog control via hand rotation.
+    -   `FIST_MOVE`: Deliberate 25-frame streak for system-wide interruptions.
 
-ReflectOS utilizes a distributed event-driven architecture to ensure low-latency interactions.
+### 🧠 The "Brain" (AI Orchestration)
+Powered by **LangGraph** and **OpenRouter**, ReflectOS supports:
+-   **Intent Classification**: Multi-stage routing for Finance, Vision, Media, and Search tasks.
+-   **Dual-Layer LLM**: Real-time cloud processing with **StepFun Flash** and local fallback with **Phi-3**.
+-   **Tool Suite**: Spotify Web API, PostgreSQL Finance Ledger, Tavily Web Search, and Local ONNX Vision models.
+
+### 📺 HUD Modules
+-   **Finance Terminal**: Real-time spending analysis and peer-to-peer debt tracking.
+-   **Media Hub**: Full-stack Spotify and YouTube control.
+-   **Vision Scanner**: Scene description, OCR, and Style feedback for outfits.
+-   **System Stats**: Real-time biometric mood visualization and hardware telemetry.
+
+---
+
+## 🏗️ Architecture
 
 ```mermaid
 graph TB
     User((User))
     
-    subgraph Frontend ["Frontend (Next.js HUD)"]
+    subgraph Frontend ["Frontend (Next.js 14)"]
         direction TB
-        Camera["Gesture Camera (MediaPipe)"]
-        Voice["Voice Processor (Picovoice)"]
+        Camera["Gesture Tracking (MediaPipe WASM)"]
+        Voice["Voice Capture (Picovoice)"]
         SocketFE["Socket.io Client"]
-        HUD_UI["HUD Canvas (Framer Motion)"]
+        HUD_UI["Framer Motion HUD Canvas"]
     end
 
-    subgraph Backend ["Backend (Flask-SocketIO)"]
+    subgraph Backend ["Backend (Flask + LangGraph)"]
         direction TB
-        SocketBE["Unified Message Multiplexer"]
-        Graph["LangGraph AI Workflow"]
-        Intent["Intent Classifier (OpenRouter)"]
-        FeatureSvc["Feature Services (Spotify, Finance, Tasks)"]
-        LocalML["Local ONNX Models (OCR, Detection)"]
+        SocketBE["Unified Event Hub"]
+        Graph["Multi-Agent Workflow"]
+        Intent["Intent Classifier (Cloud/Local Hybrid)"]
+        FeatureSvc["Domain Services (Spotify, Finance, Vision)"]
+        LocalLLM["Local Phi-3 (Llama-cpp)"]
     end
 
-    subgraph External ["Integrations"]
-        Gemini["Google Gemini (Reasoning)"]
+    subgraph External ["Cloud Integrations"]
+        OpenRouter["OpenRouter (StepFun/Gemma)"]
         SpotifyAPI["Spotify Web API"]
-        CloudAPI["Weather & Search APIs"]
+        CloudAPI["Weather & Search (Tavily/Serp)"]
     end
 
-    User -- "Hand Gestures" --> Camera
-    User -- "Voice Commands" --> Voice
+    User -- "Gestures" --> Camera
+    User -- "Voice" --> Voice
     Camera --> SocketFE
     Voice --> SocketFE
     SocketFE <-. "WebSockets" .-> SocketBE
     SocketBE <--> Graph
     Graph --> Intent
+    Intent -- "Primary" --> OpenRouter
+    Intent -- "Fallback" --> LocalLLM
     Graph --> FeatureSvc
-    FeatureSvc --> LocalML
     FeatureSvc <--> SpotifyAPI
     FeatureSvc <--> CloudAPI
-    Graph <--> Gemini
-    SocketBE -. "State Updates" .-> HUD_UI
+    SocketBE -. "Live Feedback" .-> HUD_UI
 ```
 
 ---
 
-## 🛠️ Environment Configuration
+## 🛠️ Setup & Installation
 
-### Backend Configuration
-Create a `.env` file in the `/backend` directory:
+### 1. Requirements
+-   **OS**: Linux (Arch preferred), macOS, or Windows WSL2.
+-   **Runtime**: Node.js 18+, Python 3.10+.
+-   **Hardware**: Webcam (720p+ recommended) and Microphone.
 
-| Variable | Description | Source |
-| :--- | :--- | :--- |
-| `GOOGLE_API_KEY` | Primary API key for Gemini LLM models. | [Google AI Studio](https://aistudio.google.com/) |
-| `OPENROUTER_API_KEY` | High-reliability fallback for LLM execution. | [OpenRouter](https://openrouter.ai/) |
-| `WEATHER_API_KEY` | Real-time weather data fetching. | [OpenWeatherMap](https://openweathermap.org/) |
-| `SPOTIPY_CLIENT_ID` | Spotify Developer application ID. | [Spotify Dashboard](https://developer.spotify.com/) |
-| `SPOTIPY_CLIENT_SECRET` | Spotify Developer application secret. | [Spotify Dashboard](https://developer.spotify.com/) |
-| `SPOTIPY_REDIRECT_URI` | Redirect URL (e.g., `http://127.0.0.1:8888/callback`). | Spotify Dashboard |
-| `TAVILY_API_KEY` | AI-native web search for real-time information. | [Tavily](https://tavily.com/) |
-| `SERPAPI_API_KEY` | Secondary search engine for deep queries. | [SerpApi](https://serpapi.com/) |
-| `POSTGRES_USER` | PostgreSQL database username. | Local Install |
-| `POSTGRES_PASSWORD` | PostgreSQL database password. | Local Install |
-| `POSTGRES_DB` | Database name (`reflect_os`). | Local Install |
-| `REDIS_HOST` | Redis server address for session caching. | Local Install |
-
-### Frontend Configuration
-Create a `.env.local` file in the `/frontend` directory:
-
-| Variable | Description | Source |
-| :--- | :--- | :--- |
-| `NEXT_PUBLIC_PICOVOICE_ACCESS_KEY` | Access key for Picovoice Porcupine (Wake Word). | [Picovoice Console](https://console.picovoice.ai/) |
-
----
-
-## 🔄 Technical Process Flow
-
-ReflectOS operates on a high-speed multiplexed pipeline:
-
-1.  **Input Capture**: The Frontend (Next.js) captures raw video frames and uses **MediaPipe WASM** to extract 21 hand landmarks.
-2.  **Gesture Normalization**: The `GestureEngine` translates raw coordinates into normalized vectors, applying **EMA smoothing** to stabilize movement.
-3.  **Real-time Streaming**: Normalized gestures and voice audio are streamed to the Python Backend via **Socket.IO WebSockets**.
-4.  **Intent Orchestration**: The Backend receives the message, and the **LangGraph-driven AI pipeline** classifies the intent using an LLM.
-5.  **Tool Execution**: Depending on the intent, the system triggers specific tools (Spotify API, SQL Expense queries, Vision models, etc.).
-6.  **Closed-Loop Feedback**: Results are sent back to the Frontend to update the HUD visuals and play TTS audio responses simultaneously.
-
----
-
-## 🏗️ Setup Instructions
-
-### Backend (Python)
+### 2. Backend Setup
 ```bash
 cd backend
+python -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
+python download_model.py  # Initiates local Phi-3 download
 python app.py
 ```
 
-### Frontend (Next.js)
+### 3. Frontend Setup
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
+
+### 4. Configuration (.env)
+Ensure your `.env` files are populated with the necessary keys for Spotify, OpenRouter, and Picovoice. Reference the [Implementation Plan](file:///home/mihir/.gemini/antigravity/brain/cb72808d-2c07-4a09-b2fc-edb29374517c/implementation_plan.md) for a full variable list.
+
+---
+
+## 🖖 Gesture Interaction Guide
+
+| Gesture | Action |
+| :--- | :--- |
+| **Pinch (Air Tap)** | Select / Click |
+| **Thumb Up** | Toggle Zen Mode (HUD Hide/Show) |
+| **Fist (Hold)** | System Interrupt / Exit |
+| **Hand Rotate** | Analog Volume Control |
+| **Two-Finger Gun Tap** | Open / Navigate Menu |
+
+---
+
+## 🏗️ Project Architecture
+For a detailed breakdown of the system design and intelligence hierarchy, see [ARCHITECTURE.md](file:///home/mihir/Codes/ReflectOS/ARCHITECTURE.md).
+
+---
+
+## 📜 License
+Privately held by MIHIRrPATIL. All rights reserved.

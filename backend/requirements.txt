@@ -15,3 +15,17 @@ redis
 google-api-python-client
 google-auth-httplib2
 google-auth-oauthlib
+torch
+flask-cors
+ultralytics
+paddleocr
+spotipy
+eventlet
+python-dotenv
+numpy
+edge-tts
+Pillow
+langchain
+langchain-community
+langchain-core
+langchain-text-splitters

@@ -94,7 +94,7 @@ def intent_classifier_node(state: ReflectState):
     )
     
     # Create alternating message sequence
-    messages = [{"role": "system", "content": system_message}]
+    messages = [{"role": "user", "content": f"[SYSTEM INSTRUCTION]\n{system_message}"}]
     
     messages_list = state.get("messages", [])
     if len(messages_list) > 1:
@@ -169,11 +169,18 @@ def intent_classifier_node(state: ReflectState):
     raw_content = None
     if OPENROUTER_API_KEY:
         try:
-            headers = {"Authorization": f"Bearer {OPENROUTER_API_KEY}", "Content-Type": "application/json"}
+            headers = {
+                "Authorization": f"Bearer {OPENROUTER_API_KEY}", 
+                "Content-Type": "application/json",
+                "HTTP-Referer": "https://reflectos.ai",
+                "X-Title": "ReflectOS"
+            }
             payload = {"model": OPENROUTER_MODEL, "messages": messages, "temperature": 0}
             resp = requests.post(OPENROUTER_URL, headers=headers, json=payload, timeout=20)
             if resp.status_code == 200:
                 raw_content = resp.json()["choices"][0]["message"]["content"]
+            else:
+                print(f"[ERROR] Intent OpenRouter ({resp.status_code}): {resp.text}")
         except Exception as e:
             print(f"[ERROR] OpenRouter failed: {e}")
         

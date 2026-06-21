@@ -39,7 +39,7 @@ def evaluator_node(state: ReflectState):
     )
 
     messages = [
-        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": f"[SYSTEM INSTRUCTION]\n{system_prompt}"},
         {"role": "user", "content": "Evaluate the current progress and return the JSON status."}
     ]
 
@@ -48,15 +48,22 @@ def evaluator_node(state: ReflectState):
             print(f"[EVALUATOR] Sending request to OpenRouter ({OPENROUTER_MODEL})...")
             headers = {
                 "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "HTTP-Referer": "https://reflectos.ai", # OpenRouter best practice
+                "X-Title": "ReflectOS"
             }
+            payload = {"model": OPENROUTER_MODEL, "messages": messages, "temperature": 0.0}
             response = requests.post(
                 url=OPENROUTER_URL,
                 headers=headers,
-                data=json.dumps({"model": OPENROUTER_MODEL, "messages": messages, "temperature": 0.0}),
+                json=payload,
                 timeout=30
             )
-            response.raise_for_status()
+            
+            if response.status_code != 200:
+                print(f"[EVALUATOR] OpenRouter Error ({response.status_code}): {response.text}")
+                response.raise_for_status()
+
             raw_content = response.json()["choices"][0]["message"]["content"]
             print("[EVALUATOR] OpenRouter response received.")
         else:

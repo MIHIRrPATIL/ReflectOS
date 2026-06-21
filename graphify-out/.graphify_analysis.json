@@ -1,0 +1,773 @@
+{
+  "communities": {
+    "0": [
+      "backend_ai_core_local_llm_py",
+      "backend_ai_core_state_py",
+      "backend_ai_nodes_context_manager_py",
+      "backend_ai_tools_composite_nodes_py",
+      "backend_ai_tools_vision_nodes_py",
+      "backend_ml_object_detects_py",
+      "backend_ml_ocr_model_py",
+      "core_local_llm_get_instance",
+      "core_local_llm_localllm",
+      "core_local_llm_localllm_generate",
+      "core_local_llm_localllm_load_model",
+      "core_local_llm_rationale_54",
+      "core_state_create_initial_state",
+      "core_state_executionstatus",
+      "core_state_get_time_of_day",
+      "core_state_intenttype",
+      "core_state_is_work_hours",
+      "core_state_rationale_11",
+      "core_state_rationale_118",
+      "core_state_rationale_50",
+      "core_state_reflectstate",
+      "enum",
+      "graph_graph_rationale_14",
+      "ml_object_detects_get_instance",
+      "ml_object_detects_objectdetector",
+      "ml_object_detects_objectdetector_detect",
+      "ml_object_detects_objectdetector_init",
+      "ml_object_detects_rationale_30",
+      "ml_ocr_model_get_instance",
+      "ml_ocr_model_ocrhandler",
+      "ml_ocr_model_ocrhandler_init",
+      "ml_ocr_model_ocrhandler_process_image",
+      "ml_ocr_model_ocrhandler_process_item",
+      "ml_ocr_model_rationale_24",
+      "ml_ocr_model_rationale_41",
+      "nodes_context_manager_context_manager_node",
+      "nodes_context_manager_rationale_6",
+      "nodes_evaluator_rationale_9",
+      "nodes_intent_classifier_rationale_10",
+      "nodes_response_generator_rationale_12",
+      "nodes_validator_rationale_9",
+      "services_ai_service_rationale_28",
+      "services_ai_service_rationale_47",
+      "tools_calendar_nodes_rationale_13",
+      "tools_composite_nodes_composite_node",
+      "tools_composite_nodes_rationale_8",
+      "tools_expense_nodes_rationale_11",
+      "tools_task_nodes_rationale_13",
+      "tools_vision_nodes_llm_cleanup_ocr",
+      "tools_vision_nodes_llm_vision_vlm",
+      "tools_vision_nodes_object_detection_node",
+      "tools_vision_nodes_ocr_node",
+      "tools_vision_nodes_outfit_analysis_node",
+      "tools_vision_nodes_rationale_113",
+      "tools_vision_nodes_rationale_17",
+      "tools_vision_nodes_rationale_177",
+      "tools_vision_nodes_rationale_233",
+      "tools_vision_nodes_rationale_280",
+      "tools_vision_nodes_rationale_70",
+      "tools_vision_nodes_vllm_node",
+      "tools_weather_rationale_8",
+      "tools_youtube_nodes_rationale_7",
+      "typeddict"
+    ],
+    "1": [
+      "backend_ai_tools_preference_nodes_py",
+      "backend_ai_tools_search_nodes_py",
+      "backend_ai_tools_weather_py",
+      "backend_ai_tools_youtube_nodes_py",
+      "backend_routes_object_route_py",
+      "backend_routes_ocr_route_py",
+      "backend_routes_spotify_routes_py",
+      "backend_services_spotify_service_py",
+      "routes_object_route_detect_objects",
+      "routes_ocr_route_ocr_full",
+      "routes_ocr_route_ocr_item",
+      "routes_spotify_routes_get_status",
+      "routes_spotify_routes_next_track",
+      "routes_spotify_routes_pause_playback",
+      "routes_spotify_routes_previous_track",
+      "routes_spotify_routes_rationale_41",
+      "routes_spotify_routes_rationale_52",
+      "routes_spotify_routes_rationale_63",
+      "routes_spotify_routes_rationale_8",
+      "services_spotify_service_get_instance",
+      "services_spotify_service_rationale_184",
+      "services_spotify_service_spotifyservice",
+      "services_spotify_service_spotifyservice_add_to_playlist",
+      "services_spotify_service_spotifyservice_add_to_queue",
+      "services_spotify_service_spotifyservice_create_playlist",
+      "services_spotify_service_spotifyservice_ensure_sp",
+      "services_spotify_service_spotifyservice_get_current_playback",
+      "services_spotify_service_spotifyservice_get_devices",
+      "services_spotify_service_spotifyservice_get_recently_played",
+      "services_spotify_service_spotifyservice_get_user_playlists",
+      "services_spotify_service_spotifyservice_init",
+      "services_spotify_service_spotifyservice_lazy_init",
+      "services_spotify_service_spotifyservice_next_track",
+      "services_spotify_service_spotifyservice_pause",
+      "services_spotify_service_spotifyservice_play",
+      "services_spotify_service_spotifyservice_previous_track",
+      "services_spotify_service_spotifyservice_search",
+      "services_spotify_service_spotifyservice_set_volume",
+      "services_spotify_service_spotifyservice_transfer_playback",
+      "str",
+      "tools_preference_nodes_preference_node",
+      "tools_preference_nodes_rationale_8",
+      "tools_search_nodes_rationale_7",
+      "tools_search_nodes_search_node",
+      "tools_weather_weather_node",
+      "tools_youtube_nodes_youtube_node"
+    ],
+    "2": [
+      "backend_routes_expense_routes_py",
+      "backend_services_expense_service_py",
+      "routes_expense_routes_get_balances",
+      "routes_expense_routes_get_categories",
+      "routes_expense_routes_get_debts",
+      "routes_expense_routes_get_recent",
+      "routes_expense_routes_get_summary",
+      "routes_expense_routes_rationale_19",
+      "routes_expense_routes_rationale_34",
+      "routes_expense_routes_rationale_46",
+      "routes_expense_routes_rationale_71",
+      "routes_expense_routes_rationale_8",
+      "routes_expense_routes_search",
+      "services_expense_service_expenseservice",
+      "services_expense_service_expenseservice_add_category",
+      "services_expense_service_expenseservice_add_debt",
+      "services_expense_service_expenseservice_add_expense",
+      "services_expense_service_expenseservice_add_income",
+      "services_expense_service_expenseservice_delete_transaction",
+      "services_expense_service_expenseservice_find_account",
+      "services_expense_service_expenseservice_get_balances",
+      "services_expense_service_expenseservice_get_categories",
+      "services_expense_service_expenseservice_get_conn",
+      "services_expense_service_expenseservice_get_summary",
+      "services_expense_service_expenseservice_global_search",
+      "services_expense_service_expenseservice_init",
+      "services_expense_service_expenseservice_list_debts",
+      "services_expense_service_expenseservice_list_transactions",
+      "services_expense_service_expenseservice_settle_debt",
+      "services_expense_service_expenseservice_transfer",
+      "services_expense_service_expenseservice_update_balance",
+      "services_expense_service_get_instance",
+      "services_expense_service_rationale_107",
+      "services_expense_service_rationale_130",
+      "services_expense_service_rationale_166",
+      "services_expense_service_rationale_202",
+      "services_expense_service_rationale_234",
+      "services_expense_service_rationale_24",
+      "services_expense_service_rationale_249",
+      "services_expense_service_rationale_270",
+      "services_expense_service_rationale_299",
+      "services_expense_service_rationale_315",
+      "services_expense_service_rationale_36",
+      "services_expense_service_rationale_54",
+      "services_expense_service_rationale_63",
+      "services_expense_service_rationale_85"
+    ],
+    "3": [
+      "frontend_lib_gesture_engine_gestures_onehand_ts",
+      "gesture_engine_primitives_distance",
+      "gestures_onehand_airtap",
+      "gestures_onehand_airtap_detect",
+      "gestures_onehand_cursormove",
+      "gestures_onehand_cursormove_detect",
+      "gestures_onehand_detect",
+      "gestures_onehand_fistmove",
+      "gestures_onehand_fistmove_detect",
+      "gestures_onehand_guntap",
+      "gestures_onehand_guntap_detect",
+      "gestures_onehand_menuwheel",
+      "gestures_onehand_menuwheel_detect",
+      "gestures_onehand_modeswitch",
+      "gestures_onehand_modeswitch_detect",
+      "gestures_onehand_pinchhold",
+      "gestures_onehand_pinchhold_check",
+      "gestures_onehand_pinchhold_detect",
+      "gestures_onehand_swipedown",
+      "gestures_onehand_swipedown_checkdirection",
+      "gestures_onehand_swipeleft",
+      "gestures_onehand_swipeleft_checkdirection",
+      "gestures_onehand_swiperight",
+      "gestures_onehand_swiperight_checkdirection",
+      "gestures_onehand_swipeup",
+      "gestures_onehand_swipeup_checkdirection",
+      "gestures_onehand_thumbdown",
+      "gestures_onehand_thumbdown_detect",
+      "gestures_onehand_thumbup",
+      "gestures_onehand_thumbup_detect",
+      "gestures_onehand_verticalsplit",
+      "gestures_onehand_verticalsplit_check",
+      "gestures_onehand_verticalsplit_detect",
+      "gestures_onehand_verticalsplit_isprocessing",
+      "gestures_onehand_volumedial",
+      "gestures_onehand_volumedial_detect"
+    ],
+    "4": [
+      "frontend_lib_gesture_engine_gestures_twohand_ts",
+      "frontend_lib_gesture_engine_handtracker_ts",
+      "frontend_lib_gesture_engine_primitives_ts",
+      "gesture_engine_handtracker_handtracker",
+      "gesture_engine_handtracker_handtracker_assignids",
+      "gesture_engine_handtracker_handtracker_computepalmnormal",
+      "gesture_engine_handtracker_handtracker_constructor",
+      "gesture_engine_handtracker_handtracker_getfingerstates",
+      "gesture_engine_handtracker_handtracker_process",
+      "gesture_engine_primitives_crossproduct",
+      "gesture_engine_primitives_distance2d",
+      "gesture_engine_primitives_dot",
+      "gesture_engine_primitives_mean",
+      "gesture_engine_primitives_normalize",
+      "gesture_engine_primitives_subtract",
+      "gestures_twohand_airframe",
+      "gestures_twohand_airframe_detect",
+      "gestures_twohand_airmeasure",
+      "gestures_twohand_airmeasure_detect",
+      "gestures_twohand_curtainopen",
+      "gestures_twohand_curtainopen_detect",
+      "gestures_twohand_dualswipe",
+      "gestures_twohand_dualswipe_detect",
+      "gestures_twohand_spreadzoom",
+      "gestures_twohand_spreadzoom_detect",
+      "gestures_twohand_wristcross",
+      "gestures_twohand_wristcross_detect"
+    ],
+    "5": [
+      "backend_ai_graph_graph_py",
+      "backend_tests_test_memory_system_py",
+      "graph_graph_build_graph",
+      "services_ai_service_aiservice_init",
+      "tests_test_memory_system_test_memory_system",
+      "tests_test_multi_tool_flow_py",
+      "tests_test_multi_tool_flow_test_weather_and_vision_flow",
+      "tests_test_multi_tool_flow_testmultitoolflow",
+      "tests_test_multi_tool_flow_testmultitoolflow_setup",
+      "tests_test_recursive_refinement_py",
+      "tests_test_recursive_refinement_test_spotify_refinement_loop",
+      "tests_test_recursive_refinement_testrecursiverefinement",
+      "tests_test_recursive_refinement_testrecursiverefinement_setup",
+      "tests_test_spotify_agentic_py",
+      "tests_test_spotify_agentic_test_spotify_multi_intent_flow",
+      "tests_test_spotify_agentic_testspotifyagenticflow",
+      "tests_test_spotify_agentic_testspotifyagenticflow_setup",
+      "tests_test_vision_integration_py",
+      "tests_test_vision_integration_recursivecharactertextsplitter",
+      "tests_test_vision_integration_test_vision_skills",
+      "tests_test_weather_integration_py",
+      "tests_test_weather_integration_test_weather"
+    ],
+    "6": [
+      "backend_app_create_app",
+      "backend_app_handle_connect",
+      "backend_app_handle_multiplexed_message",
+      "backend_app_py",
+      "backend_app_rationale_55",
+      "backend_services_volume_service_py",
+      "frontend_lib_gesture_engine_gesturemanager_ts",
+      "gesture_engine_gesturemanager_gesturemanager",
+      "gesture_engine_gesturemanager_gesturemanager_constructor",
+      "gesture_engine_gesturemanager_gesturemanager_emit",
+      "gesture_engine_gesturemanager_gesturemanager_update",
+      "services_volume_service_rationale_25",
+      "services_volume_service_reset_volume_buffer",
+      "services_volume_service_set_volume",
+      "services_volume_service_volumesmoother",
+      "services_volume_service_volumesmoother_add",
+      "services_volume_service_volumesmoother_get_median",
+      "services_volume_service_volumesmoother_init",
+      "services_volume_service_volumesmoother_reset"
+    ],
+    "7": [
+      "backend_ai_nodes_evaluator_py",
+      "backend_ai_nodes_response_generator_py",
+      "backend_ai_nodes_validator_py",
+      "backend_ai_tools_calendar_nodes_py",
+      "backend_ai_tools_expense_nodes_py",
+      "backend_ai_tools_task_nodes_py",
+      "backend_tests_test_ai_helpers_py",
+      "backend_utils_ai_helpers_py",
+      "nodes_evaluator_evaluator_node",
+      "nodes_response_generator_response_generator_node",
+      "nodes_validator_validator_node",
+      "tests_test_ai_helpers_test_extract_json",
+      "tools_calendar_nodes_calendar_node",
+      "tools_expense_nodes_expense_node",
+      "tools_task_nodes_task_node",
+      "utils_ai_helpers_extract_json",
+      "utils_ai_helpers_parse_ai_content",
+      "utils_ai_helpers_rationale_32",
+      "utils_ai_helpers_rationale_4"
+    ],
+    "8": [
+      "backend_services_task_service_py",
+      "services_task_service_get_instance",
+      "services_task_service_rationale_111",
+      "services_task_service_rationale_141",
+      "services_task_service_rationale_22",
+      "services_task_service_rationale_37",
+      "services_task_service_rationale_66",
+      "services_task_service_rationale_81",
+      "services_task_service_rationale_96",
+      "services_task_service_taskservice",
+      "services_task_service_taskservice_add_task",
+      "services_task_service_taskservice_delete_task",
+      "services_task_service_taskservice_find_task",
+      "services_task_service_taskservice_get_conn",
+      "services_task_service_taskservice_init",
+      "services_task_service_taskservice_list_tasks",
+      "services_task_service_taskservice_mark_all_done",
+      "services_task_service_taskservice_mark_done",
+      "services_task_service_taskservice_update_task"
+    ],
+    "9": [
+      "backend_ai_nodes_intent_classifier_py",
+      "backend_ai_tools_spotify_nodes_py",
+      "backend_tests_test_spotify_logic_py",
+      "backend_tests_test_spotify_playlists_py",
+      "nodes_intent_classifier_intent_classifier_node",
+      "tests_test_spotify_logic_test_spotify_need_target",
+      "tests_test_spotify_logic_test_spotify_no_device",
+      "tests_test_spotify_logic_test_spotify_play_track_success",
+      "tests_test_spotify_playlists_test_spotify_playlist_logic",
+      "tools_spotify_nodes_rationale_160",
+      "tools_spotify_nodes_rationale_197",
+      "tools_spotify_nodes_rationale_233",
+      "tools_spotify_nodes_rationale_6",
+      "tools_spotify_nodes_spotify_device_node",
+      "tools_spotify_nodes_spotify_playback_node",
+      "tools_spotify_nodes_spotify_playlist_node",
+      "tools_spotify_nodes_spotify_status_node"
+    ],
+    "10": [
+      "backend_services_ai_service_py",
+      "backend_utils_tts_py",
+      "services_ai_service_aiservice",
+      "services_ai_service_aiservice_decode_base64_image",
+      "services_ai_service_aiservice_handle_interrupt",
+      "services_ai_service_aiservice_preload_models",
+      "services_ai_service_aiservice_process_stt_logic",
+      "services_ai_service_aiservice_set_emitter",
+      "services_ai_service_get_instance",
+      "utils_tts_generate_audio",
+      "utils_tts_generate_tts_base64",
+      "utils_tts_generate_tts_pyttsx3_fallback",
+      "utils_tts_rationale_20",
+      "utils_tts_rationale_51"
+    ],
+    "11": [
+      "backend_services_calendar_service_py",
+      "services_calendar_service_calendarservice",
+      "services_calendar_service_calendarservice_authenticate",
+      "services_calendar_service_calendarservice_create_event",
+      "services_calendar_service_calendarservice_get_upcoming_events",
+      "services_calendar_service_calendarservice_init",
+      "services_calendar_service_get_instance",
+      "services_calendar_service_rationale_26",
+      "services_calendar_service_rationale_58",
+      "services_calendar_service_rationale_97"
+    ],
+    "12": [
+      "backend_ai_tools_system_control_py",
+      "backend_tests_test_volume_utils_py",
+      "backend_utils_volume_control_py",
+      "tests_test_volume_utils_test_volume_utils",
+      "tools_system_control_rationale_7",
+      "tools_system_control_system_control_node",
+      "utils_volume_control_get_master_volume",
+      "utils_volume_control_rationale_19",
+      "utils_volume_control_rationale_60",
+      "utils_volume_control_set_master_volume"
+    ],
+    "13": [
+      "frontend_lib_gesture_engine_gesturesocket_ts",
+      "gesture_engine_gesturesocket_gesturesocket",
+      "gesture_engine_gesturesocket_gesturesocket_constructor",
+      "gesture_engine_gesturesocket_gesturesocket_emitmessage",
+      "gesture_engine_gesturesocket_gesturesocket_getinstance",
+      "gesture_engine_gesturesocket_gesturesocket_getsocket",
+      "gesture_engine_gesturesocket_gesturesocket_sendgesture",
+      "gesture_engine_gesturesocket_gesturesocket_sendinterrupt",
+      "gesture_engine_gesturesocket_gesturesocket_sendmenuaction",
+      "gesture_engine_gesturesocket_gesturesocket_sendvoicecommand"
+    ],
+    "14": [
+      "backend_cv_ocr_text_detector_py",
+      "ocr_text_detector_rationale_26",
+      "ocr_text_detector_rationale_74",
+      "ocr_text_detector_textdetector",
+      "ocr_text_detector_textdetector_detect",
+      "ocr_text_detector_textdetector_init",
+      "ocr_text_detector_textdetector_visualize"
+    ],
+    "15": [
+      "backend_core_db_py",
+      "core_db_databasemanager",
+      "core_db_databasemanager_get_checkpointer",
+      "core_db_databasemanager_get_redis",
+      "core_db_databasemanager_init",
+      "core_db_get_instance"
+    ],
+    "16": [
+      "components_gesturefeedback_checkclickable",
+      "components_gesturefeedback_fetchstatus",
+      "components_gesturefeedback_handlegesture",
+      "components_gesturefeedback_handlemessage",
+      "components_gesturefeedback_spotifycontrol",
+      "frontend_components_gesturefeedback_tsx"
+    ],
+    "17": [
+      "backend_routes_task_routes_py",
+      "routes_task_routes_add_task",
+      "routes_task_routes_delete_task",
+      "routes_task_routes_list_tasks",
+      "routes_task_routes_mark_task_done"
+    ],
+    "18": [
+      "backend_ml_outfit_model_py",
+      "backend_routes_outfit_route_py",
+      "ml_outfit_model_analyze_outfit",
+      "ml_outfit_model_rationale_3",
+      "routes_outfit_route_detect_outfit"
+    ],
+    "19": [
+      "components_todopanel_deadlineflag",
+      "components_todopanel_handleadd",
+      "components_todopanel_handledelete",
+      "components_todopanel_handledone",
+      "frontend_components_todopanel_tsx"
+    ],
+    "20": [
+      "backend_utils_scheduler_py",
+      "utils_scheduler_scheduler",
+      "utils_scheduler_scheduler_init",
+      "utils_scheduler_scheduler_schedule_task"
+    ],
+    "21": [
+      "components_youtubeplayer_handlemessage",
+      "components_youtubeplayer_handler",
+      "components_youtubeplayer_handlevideoclick",
+      "frontend_components_youtubeplayer_tsx"
+    ],
+    "22": [
+      "backend_ai_tools_confirmation_nodes_py",
+      "tools_confirmation_nodes_confirmation_node",
+      "tools_confirmation_nodes_rationale_5"
+    ],
+    "23": [
+      "backend_core_patches_py",
+      "core_patches_apply_patches",
+      "core_patches_rationale_5"
+    ],
+    "24": [
+      "components_expensepanel_fmt",
+      "components_expensepanel_handler",
+      "frontend_components_expensepanel_tsx"
+    ],
+    "25": [
+      "components_gesturecamera_detect",
+      "components_gesturecamera_loadmodel",
+      "frontend_components_gesturecamera_tsx"
+    ],
+    "26": [
+      "backend_download_model_download_model",
+      "backend_download_model_py"
+    ],
+    "27": [
+      "backend_manual_auth_main",
+      "backend_manual_auth_py"
+    ],
+    "28": [
+      "backend_ai_nodes_interrupt_handler_py",
+      "nodes_interrupt_handler_interrupt_handler_node"
+    ],
+    "29": [
+      "backend_ai_nodes_user_input_py",
+      "nodes_user_input_user_input_node"
+    ],
+    "30": [
+      "backend_utils_config_loader_py",
+      "utils_config_loader_load_config"
+    ],
+    "31": [
+      "backend_routes_vision_py",
+      "routes_vision_get_vision_status"
+    ],
+    "32": [
+      "backend_routes_voice_py",
+      "routes_voice_listen"
+    ],
+    "33": [
+      "backend_tests_test_tts_local_py",
+      "tests_test_tts_local_test_local_tts"
+    ],
+    "34": [
+      "backend_tests_test_memory_logic_py",
+      "tests_test_memory_logic_test_memory_persistence"
+    ],
+    "35": [
+      "backend_tests_benchmark_llm_py",
+      "tests_benchmark_llm_benchmark"
+    ],
+    "36": [
+      "frontend_lib_hooks_usewakeword_ts",
+      "hooks_usewakeword_usewakeword"
+    ],
+    "37": [
+      "frontend_lib_hooks_usespeechtotext_ts",
+      "hooks_usespeechtotext_usespeechtotext"
+    ],
+    "38": [
+      "frontend_lib_gesture_engine_gesture_ts",
+      "gesture_engine_gesture_check"
+    ],
+    "39": [
+      "components_voiceassistant_handlemessage",
+      "frontend_components_voiceassistant_tsx"
+    ],
+    "40": [
+      "components_accountbalances_accountbalances",
+      "frontend_components_accountbalances_tsx"
+    ],
+    "41": [
+      "context_hudcontext_usehud",
+      "frontend_context_hudcontext_tsx"
+    ],
+    "42": [
+      "context_socketcontext_usesocket",
+      "frontend_context_socketcontext_tsx"
+    ],
+    "43": [
+      "app_page_usedigitalclock",
+      "frontend_app_page_tsx"
+    ],
+    "44": [
+      "app_layout_rootlayout",
+      "frontend_app_layout_tsx"
+    ],
+    "45": [
+      "backend_ai_tools_play_youtube_node_py"
+    ],
+    "46": [
+      "backend_ai_graph_edges_py"
+    ],
+    "47": [
+      "backend_ai_core_config_py"
+    ],
+    "48": [
+      "backend_ai_core_intent_py"
+    ],
+    "49": [
+      "backend_tests_test_openrouter_py"
+    ],
+    "50": [
+      "frontend_next_config_ts"
+    ],
+    "51": [
+      "frontend_eslint_config_mjs"
+    ],
+    "52": [
+      "frontend_postcss_config_mjs"
+    ],
+    "53": [
+      "frontend_next_env_d_ts"
+    ]
+  },
+  "cohesion": {
+    "0": 0.06,
+    "1": 0.08,
+    "2": 0.07,
+    "3": 0.06,
+    "4": 0.1,
+    "5": 0.09,
+    "6": 0.13,
+    "7": 0.11,
+    "8": 0.16,
+    "9": 0.14,
+    "10": 0.2,
+    "11": 0.22,
+    "12": 0.24,
+    "13": 0.29,
+    "14": 0.29,
+    "15": 0.4,
+    "16": 0.4,
+    "17": 0.4,
+    "18": 0.4,
+    "19": 0.4,
+    "20": 0.5,
+    "21": 0.5,
+    "22": 0.67,
+    "23": 0.67,
+    "24": 0.67,
+    "25": 0.67,
+    "26": 1.0,
+    "27": 1.0,
+    "28": 1.0,
+    "29": 1.0,
+    "30": 1.0,
+    "31": 1.0,
+    "32": 1.0,
+    "33": 1.0,
+    "34": 1.0,
+    "35": 1.0,
+    "36": 1.0,
+    "37": 1.0,
+    "38": 1.0,
+    "39": 1.0,
+    "40": 1.0,
+    "41": 1.0,
+    "42": 1.0,
+    "43": 1.0,
+    "44": 1.0,
+    "45": 1.0,
+    "46": 1.0,
+    "47": 1.0,
+    "48": 1.0,
+    "49": 1.0,
+    "50": 1.0,
+    "51": 1.0,
+    "52": 1.0,
+    "53": 1.0
+  },
+  "gods": [
+    {
+      "id": "core_state_reflectstate",
+      "label": "ReflectState",
+      "degree": 33
+    },
+    {
+      "id": "services_spotify_service_spotifyservice",
+      "label": "SpotifyService",
+      "degree": 26
+    },
+    {
+      "id": "services_expense_service_expenseservice",
+      "label": "ExpenseService",
+      "degree": 24
+    },
+    {
+      "id": "core_local_llm_localllm",
+      "label": "LocalLLM",
+      "degree": 22
+    },
+    {
+      "id": "core_state_intenttype",
+      "label": "IntentType",
+      "degree": 18
+    },
+    {
+      "id": "ml_ocr_model_ocrhandler",
+      "label": "OCRHandler",
+      "degree": 13
+    },
+    {
+      "id": "services_ai_service_aiservice",
+      "label": "AIService",
+      "degree": 12
+    },
+    {
+      "id": "ml_object_detects_objectdetector",
+      "label": "ObjectDetector",
+      "degree": 12
+    },
+    {
+      "id": "services_task_service_taskservice",
+      "label": "TaskService",
+      "degree": 11
+    },
+    {
+      "id": "utils_ai_helpers_extract_json",
+      "label": "extract_json()",
+      "degree": 10
+    }
+  ],
+  "surprises": [
+    {
+      "source": "test_weather()",
+      "target": "build_graph()",
+      "source_files": [
+        "tests/test_weather_integration.py",
+        "backend/ai/graph/graph.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `test_weather()` unexpectedly reaches hub `build_graph()`"
+    },
+    {
+      "source": "test_vision_skills()",
+      "target": "build_graph()",
+      "source_files": [
+        "tests/test_vision_integration.py",
+        "backend/ai/graph/graph.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `test_vision_skills()` unexpectedly reaches hub `build_graph()`"
+    },
+    {
+      "source": "Handles system-level commands like volume adjustment.",
+      "target": "ReflectState",
+      "source_files": [
+        "backend/ai/tools/system_control.py",
+        "backend/ai/core/state.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities; peripheral node `Handles system-level commands like volume adjustment.` unexpectedly reaches hub `ReflectState`"
+    },
+    {
+      "source": "Template node for searching the web (SEARCH_WEB).     In a real implementation,",
+      "target": "ReflectState",
+      "source_files": [
+        "backend/ai/tools/search_nodes.py",
+        "backend/ai/core/state.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities; peripheral node `Template node for searching the web (SEARCH_WEB).     In a real implementation,` unexpectedly reaches hub `ReflectState`"
+    },
+    {
+      "source": "Template node for confirming user actions (CONFIRM_ACTION).     Handles 'Yes', '",
+      "target": "ReflectState",
+      "source_files": [
+        "backend/ai/tools/confirmation_nodes.py",
+        "backend/ai/core/state.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities; peripheral node `Template node for confirming user actions (CONFIRM_ACTION).     Handles 'Yes', '` unexpectedly reaches hub `ReflectState`"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `ReflectState` connect `Community 0` to `Community 1`, `Community 12`, `Community 22`, `Community 9`?",
+      "why": "High betweenness centrality (0.142) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `ExpenseService` connect `Community 2` to `Community 0`?",
+      "why": "High betweenness centrality (0.089) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `Manages expenses, income, transfers, debts, and financial summaries.     Uses LL` connect `Community 0` to `Community 2`, `Community 7`?",
+      "why": "High betweenness centrality (0.062) - this node is a cross-community bridge."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 41 inferred relationships involving `str` (e.g. with `object_detection_node()` and `ocr_node()`) actually correct?",
+      "why": "`str` has 41 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 29 inferred relationships involving `ReflectState` (e.g. with `Manages expenses, income, transfers, debts, and financial summaries.     Uses LL` and `Sends base64 image data to a VLM (Vision-Language Model) via OpenRouter.`) actually correct?",
+      "why": "`ReflectState` has 29 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 8 inferred relationships involving `SpotifyService` (e.g. with `Handles core playback: search, play, pause, skip, volume.` and `Handles device listing and switching.`) actually correct?",
+      "why": "`SpotifyService` has 8 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 6 inferred relationships involving `ExpenseService` (e.g. with `Manages expenses, income, transfers, debts, and financial summaries.     Uses LL` and `Get all account balances.`) actually correct?",
+      "why": "`ExpenseService` has 6 INFERRED edges - model-reasoned connections that need verification."
+    }
+  ]
+}

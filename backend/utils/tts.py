@@ -18,8 +18,33 @@ async def _generate_audio(text, output_file):
 
 def generate_tts_base64(text):
     """
-    User requested pyttsx3 as the primary engine for speed and reliability.
+    Primary: edge-tts (Realistic Neural Voice)
+    Fallback: pyttsx3 (Offline/Local)
     """
+    try:
+        # edge-tts is better but requires network.
+        import asyncio
+        import uuid
+        
+        tmp_path = os.path.join(tempfile.gettempdir(), f"edge_{uuid.uuid4()}.mp3")
+        
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            loop.run_until_complete(_generate_audio(text, tmp_path))
+        finally:
+            loop.close()
+            
+        if os.path.exists(tmp_path):
+            with open(tmp_path, "rb") as f:
+                audio_data = f.read()
+            base64_audio = base64.b64encode(audio_data).decode("utf-8")
+            os.remove(tmp_path)
+            print("[TTS] edge-tts successful.")
+            return base64_audio
+    except Exception as e:
+        print(f"[WARNING] edge-tts failed (using fallback): {e}")
+        
     return _generate_tts_pyttsx3_fallback(text)
 
 def _generate_tts_pyttsx3_fallback(text):

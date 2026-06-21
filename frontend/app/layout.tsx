@@ -3,6 +3,7 @@ import "./globals.css";
 import GestureFeedback from "@/components/GestureFeedback";
 import YouTubePlayer from "@/components/YouTubePlayer";
 import { SocketProvider } from "@/context/SocketContext";
+import { HUDProvider } from "@/context/HUDContext";
 
 export const metadata: Metadata = {
   title: "ReflectOS",
@@ -18,11 +19,13 @@ export default function RootLayout({
     <html lang="en">
       <body suppressHydrationWarning>
         <SocketProvider>
-          {/* Dot grid background layer */}
-          <div className="hud-grid" />
-          <GestureFeedback />
-          <YouTubePlayer />
-          {children}
+          <HUDProvider>
+            {/* Dot grid background layer */}
+            <div className="hud-grid" />
+            <GestureFeedback />
+            <YouTubePlayer />
+            {children}
+          </HUDProvider>
         </SocketProvider>
       </body>
     </html>

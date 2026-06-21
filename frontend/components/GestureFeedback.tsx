@@ -7,7 +7,10 @@ import { GestureSocket } from "../lib/gesture-engine/GestureSocket";
 import { motion, AnimatePresence } from "framer-motion";
 import ExpensePanel from "./ExpensePanel";
 
+import { useHUD } from "../context/HUDContext";
+
 export default function GestureFeedback() {
+  const { toggleZenMode, zenMode } = useHUD();
   const [lastGesture, setLastGesture] = useState<string | null>(null);
   const [webcam, setWebcam] = useState<Webcam | null>(null);
   
@@ -163,6 +166,12 @@ export default function GestureFeedback() {
   // SPREAD ZOOM = Toggle camera fullscreen
     if (gesture === "SPREAD_ZOOM") {
         setCameraExpanded(prev => !prev);
+        return;
+    }
+
+    // THUMB_UP = Toggle Zen Mode
+    if (gesture === "THUMB_UP") {
+        toggleZenMode();
         return;
     }
 

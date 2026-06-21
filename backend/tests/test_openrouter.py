@@ -8,10 +8,10 @@ key = os.getenv("OPENROUTER_API_KEY")
 url = "https://openrouter.ai/api/v1/chat/completions"
 
 models = [
-    "google/gemini-2.0-flash-lite-preview-02-05:free",
-    "xiaomi/mimo-v2-flash",
-    "xiaomi/mimo-v2-flash:free",
-    "mistralai/mistral-7b-instruct:free"
+    "google/gemma-4-31b-it:free",
+    "google/gemma-4-26b-a4b-it:free",
+    "nvidia/nemotron-nano-9b-v2:free",
+    "cohere/north-mini-code:free"
 ]
 
 print(f"Key loaded: {key[:10]}...{key[-5:] if key else 'None'}")

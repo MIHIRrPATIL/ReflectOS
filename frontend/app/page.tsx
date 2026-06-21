@@ -1,6 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useHUD } from "@/context/HUDContext";
 import VoiceAssistant from "@/components/VoiceAssistant";
 import TodoPanel from "@/components/TodoPanel";
 import AccountBalances from "@/components/AccountBalances";
@@ -26,6 +28,9 @@ function useDigitalClock() {
 
 export default function Home() {
   const { day, date, time } = useDigitalClock();
+  const hud = useHUD();
+  const zenMode = hud?.zenMode ?? false;
+  console.log("[HOME] HUD State:", { zenMode, hudExists: !!hud });
 
   return (
     <main className="relative w-screen h-screen overflow-hidden">
@@ -40,9 +45,18 @@ export default function Home() {
       </div>
 
       {/* ── Top-Right: TODO Panel ────────────────────────────── */}
-      <div className="fixed top-6 right-6 z-10 fade-in">
-        <TodoPanel />
-      </div>
+      <AnimatePresence>
+        {!zenMode && (
+          <motion.div 
+            className="fixed top-6 right-6 z-10 fade-in"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+          >
+            <TodoPanel />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── Center: Voice Agent (large, prominent) ───────────── */}
       <div className="fixed inset-0 flex items-center justify-center z-20 pointer-events-none">
@@ -86,23 +100,41 @@ export default function Home() {
       </div>
 
       {/* ── Left-Middle: Account Balances ────────────────────────── */}
-      <div className="fixed left-6 top-1/2 -translate-y-1/2 z-10 fade-in">
-        <AccountBalances />
-      </div>
+      <AnimatePresence>
+        {!zenMode && (
+          <motion.div 
+            className="fixed left-6 top-1/2 -translate-y-1/2 z-10 fade-in"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+          >
+            <AccountBalances />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── Bottom-Right: System Stats ────────────────────────── */}
-      <div className="fixed bottom-6 right-6 z-10">
-        <div className="flex items-center gap-4">
-          <div className="text-right">
-            <span className="hud-label text-[7px] block">MODULES</span>
-            <span className="text-[11px] text-white/40">5 ACTIVE</span>
-          </div>
-          <div className="text-right">
-            <span className="hud-label text-[7px] block">STATUS</span>
-            <span className="text-[11px] text-white/40">NOMINAL</span>
-          </div>
-        </div>
-      </div>
+      <AnimatePresence>
+        {!zenMode && (
+          <motion.div 
+            className="fixed bottom-6 right-6 z-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+          >
+            <div className="flex items-center gap-4">
+              <div className="text-right">
+                <span className="hud-label text-[7px] block">MODULES</span>
+                <span className="text-[11px] text-white/40">5 ACTIVE</span>
+              </div>
+              <div className="text-right">
+                <span className="hud-label text-[7px] block">STATUS</span>
+                <span className="text-[11px] text-white/40">NOMINAL</span>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }

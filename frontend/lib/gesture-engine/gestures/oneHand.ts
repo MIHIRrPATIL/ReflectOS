@@ -2,15 +2,15 @@ import { Gesture } from "../Gesture";
 import { HandInfo } from "../HandTracker";
 import { distance } from "../primitives";
 
-const HISTORY_REQUIRED = 5;
+const HISTORY_REQUIRED = 3;
 
 // ==========================================
 // SWIPES
 // ==========================================
 abstract class SwipeGesture extends Gesture {
-    protected minVelocityBase = 0.08;
-    protected requiredStreak = 3;
-    protected cooldown = 1000;
+    protected minVelocityBase = 0.04;
+    protected requiredStreak = 2;
+    protected cooldown = 800;
 
     detect(hands: HandInfo[], history: Record<number, HandInfo[]>): boolean {
         if (hands.length === 0) return false;
@@ -74,6 +74,15 @@ export class AirTap extends Gesture {
     detect(hands: HandInfo[], history: Record<number, HandInfo[]>): boolean {
         if (hands.length === 0) return false;
         const hand = hands[0];
+
+        // Strict Check: Index and Thumb must be "extended" to some degree, 
+        // but for AirTap Tip-to-Tip is the primary check.
+        // HOWEVER, to avoid THUMB_UP, we MUST ensure Middle, Ring, Pinky are curled.
+        if (hand.fingersExtended[2] || hand.fingersExtended[3] || hand.fingersExtended[4]) return false;
+        
+        // Index should be roughly extended (or at least not tightly curled)
+        // MediaPipe fingersExtended is usually reliable for this.
+        if (!hand.fingersExtended[1]) return false;
 
         const thumbTip = hand.landmarks[4];
         const indexTip = hand.landmarks[8];
@@ -324,7 +333,7 @@ export class ModeSwitch extends Gesture {
 
 export class FistMove extends Gesture {
     name = "FIST_MOVE";
-    protected requiredStreak = 5;
+    protected requiredStreak = 25; // Even higher to prevent any accidental interrupts
 
     detect(hands: HandInfo[], history: Record<number, HandInfo[]>): boolean {
         if (hands.length === 0) return false;
@@ -340,13 +349,17 @@ export class ThumbUp extends Gesture {
     detect(hands: HandInfo[], history: Record<number, HandInfo[]>): boolean {
         if (hands.length === 0) return false;
         const h = hands[0];
-        if (!(h.fingersExtended[0] && !h.fingersExtended.slice(1).some(f => f))) return false;
+        
+        // STRICT: Thumb ONLY. Index, Middle, Ring, Pinky MUST be curled.
+        if (!h.fingersExtended[0]) return false;
+        if (h.fingersExtended[1] || h.fingersExtended[2] || h.fingersExtended[3] || h.fingersExtended[4]) return false;
 
         const tip = h.landmarks[4];
         const ip = h.landmarks[3];
         const mcp = h.landmarks[2];
 
-        return (tip.y < ip.y - 0.02) && (ip.y < mcp.y);
+        // Additional sanity: Tip must be significantly higher than MCP in Y (for UP)
+        return (tip.y < ip.y - 0.05) && (ip.y < mcp.y);
     }
 }
 
@@ -358,32 +371,19 @@ export class ThumbDown extends Gesture {
         if (hands.length === 0) return false;
         const h = hands[0];
 
-        // Extended: Start with Thumb only? Or Fist with Thumb out?
-        // Usually Thumb extended, others curled.
+        // STRICT: Thumb ONLY. Others MUST be curled.
         if (!h.fingersExtended[0]) return false;
-
-        // Check others curled (Relaxed check: at least index/middle curled)
-        if (h.fingersExtended[1] || h.fingersExtended[2]) return false;
+        if (h.fingersExtended[1] || h.fingersExtended[2] || h.fingersExtended[3] || h.fingersExtended[4]) return false;
 
         const start = h.landmarks[2]; // MCP
         const end = h.landmarks[4];   // TIP
 
-        // Vector from MCP to Tip
         const vec = { x: end.x - start.x, y: end.y - start.y };
-
-        // Normalize
         const len = Math.sqrt(vec.x * vec.x + vec.y * vec.y);
         if (len === 0) return false;
         const norm = { x: vec.x / len, y: vec.y / len };
 
-        // Dot Product with Down (0, 1)
-        // If pointing down, y should be positive? 
-        // MediaPipe: y increases downwards. So Down Vector is (0, 1).
-        // Dot > 0.8 means pointing mostly down.
-
-        const dot = norm.y; // since x*0 + y*1
-
-        return dot > 0.8;
+        return norm.y > 0.85; // Strict down
     }
 }
 

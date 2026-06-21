@@ -26,9 +26,12 @@ export class GestureManager {
     private lastCursorCoords = "0.5,0.5";
     private readonly cursorGracePeriod = 0.5; // 500ms grace for tap-to-click transition
 
-    // Locking
+    // Locking & Debouncing
     private lockExpiry = 0;
     private lockingSource: "VOLUME" | "OTHER" | null = null;
+    private activeGestureName: string | null = null;
+    private activeGestureStreak = 0;
+    private readonly STREAK_THRESHOLD = 3;
 
     // Gestures
     private twoHandGestures: Gesture[];
@@ -43,6 +46,8 @@ export class GestureManager {
     private cursorMove = new CursorMove();
     private gunTap = new GunTap();
     private verticalSplit = new VerticalSplit();
+    private thumbUp = new ThumbUp();
+    private thumbDown = new ThumbDown();
 
     constructor() {
         this.twoHandGestures = [
@@ -57,17 +62,17 @@ export class GestureManager {
             new SwipeLeft(), new SwipeRight(), new SwipeUp(), new SwipeDown()
         ];
 
+        // Priotized list for one-hand gestures
         this.oneHandGestures = [
-            this.verticalSplit,
-            this.cursorMove,
-            this.volumeDial,
-            ...this.swipes,
-            new ModeSwitch(),
-            new PinchHold(),
-            this.fistGesture,
-            new ThumbUp(),
-            new ThumbDown(),
-            this.airTap
+            this.fistGesture,   // 1. Safety / Interrupt
+            this.verticalSplit, // 2. Major Layout Action
+            this.thumbUp,       // 3. Zen Mode Toggle
+            this.thumbDown,     // 4. Downwards Toggle
+            new ModeSwitch(),   // 5. Locking
+            this.volumeDial,    // 6. Analog Control
+            this.gunTap,        // 7. Menu Navigation
+            new PinchHold(),    // 8. Complex Cursor Action
+            this.airTap         // 9. Default Click / Point
         ];
     }
 
@@ -88,6 +93,8 @@ export class GestureManager {
             this.lockExpiry = 0;     // Release locks
             this.lockingSource = null;
             this.isCursorActive = false;
+            this.activeGestureName = null;
+            this.activeGestureStreak = 0;
 
             if (this.inMenuMode) {
                 this.inMenuMode = false;
@@ -99,7 +106,6 @@ export class GestureManager {
         // Update History
         for (const hand of hands) {
             if (!this.history[hand.id]) this.history[hand.id] = [];
-
             const hist = this.history[hand.id];
             hist.push(hand);
             if (hist.length > this.historySize) hist.shift();
@@ -108,131 +114,96 @@ export class GestureManager {
         const primaryHand = hands[0];
         const currentTime = Date.now() / 1000;
 
-        // 1. CURSOR MODE (High Priority)
+        // 1. CURSOR MODE (Special handling, high priority for navigation)
         if (this.cursorMove.check([primaryHand], this.history)) {
             this.isCursorActive = true;
             this.lastCursorActiveTime = currentTime;
             this.lastCursorCoords = this.cursorMove.name.split(":")[1];
-
-            // While Cursor is moving, check for Air Tap (Click)
+            this.activeGestureName = "CURSOR";
+            
             if (this.airTap.check([primaryHand], this.history)) {
                 return this.emit(`CURSOR_CLICK:${this.lastCursorCoords}`);
             }
-
             return this.emit(this.cursorMove.name);
         } else {
             this.isCursorActive = false;
-
-            // GRACE PERIOD: Allow Air Tap to trigger click even if pointing pose is lost briefly
-            if (currentTime - this.lastCursorActiveTime < this.cursorGracePeriod) {
-                if (this.airTap.check([primaryHand], this.history)) {
-                    return this.emit(`CURSOR_CLICK:${this.lastCursorCoords}`);
-                }
-            }
         }
 
-        // 0. CHECK GLOBAL LOCK
-        if (currentTime < this.lockExpiry) {
-            // Check Fist to Break Lock/Close
-            if (this.fistGesture.check([primaryHand], this.history)) {
-                this.lockExpiry = 0;
-                this.inMenuMode = false;
-                return this.emit("GESTURE_CLOSE");
-            }
+        // 2. CHECK EXISTING ACTIVE GESTURE (STICKY LOCK)
+        // If we are already in a gesture (like THUMB_UP), we prioritize continuing it
+        // until it's lost for a few frames. This preventing flickering.
+        if (this.activeGestureName && this.activeGestureName !== "IDLE" && this.activeGestureName !== "CURSOR") {
+             const activeG = this.oneHandGestures.find(g => g.name === this.activeGestureName) || 
+                          this.swipes.find(g => g.name === this.activeGestureName);
+             
+             if (activeG && activeG.check([primaryHand], this.history)) {
+                 this.activeGestureStreak++;
+                 // Continue active gesture
+                 if (this.activeGestureName.startsWith("VOLUME:")) {
+                     const newVal = activeG.name;
+                     if (newVal !== this.lastVolumeVal) {
+                        this.lastVolumeVal = newVal;
+                        return this.emit(newVal);
+                     }
+                     return null;
+                 }
+                 // Swipes are one-off, don't repeat them
+                 if (this.activeGestureName.startsWith("SWIPE_")) return null;
 
-            if (this.lockingSource === "VOLUME") {
-                if (this.volumeDial.check([primaryHand], this.history)) {
-                    this.lockExpiry = currentTime + 3.0;
-                    return this.emit(this.volumeDial.name);
-                }
-            }
-            return null; // Blocked
+                 return null; // Already emitted or continuous
+             } else {
+                 this.activeGestureStreak = 0;
+                 this.activeGestureName = null;
+             }
         }
 
-        // 0.5 GLOBAL FIST (Immediate Close)
+        // 3. GLOBAL FIST (Immediate Close / Priority 0)
         if (this.fistGesture.check([primaryHand], this.history)) {
             this.inMenuMode = false;
+            this.activeGestureName = "FIST_MOVE";
             return this.emit("GESTURE_CLOSE");
         }
 
-        // 1. MENU MODE
-        if (this.inMenuMode) {
-            // 1. Double Tap Detection
-            if (this.airTap.check([primaryHand], this.history)) {
-                if (currentTime - this.lastTapTime < 1.2) { // 1.2s window
-                    this.inMenuMode = false; // Close Menu
-                    return this.emit("MENU_SELECT");
-                } else {
-                    this.lastTapTime = currentTime;
-                    return this.emit("MENU_TAP");
+        // 4. TWO-HAND GESTURES
+        if (hands.length >= 2) {
+            for (const gesture of this.twoHandGestures) {
+                if (gesture.check(hands, this.history)) {
+                    this.activeGestureName = gesture.name;
+                    return this.emit(gesture.name);
                 }
             }
-
-            // 2. Wheel Navigation
-            if (this.menuWheel.check([primaryHand], this.history)) {
-                return this.emit(this.menuWheel.name);
-            }
-
             return null;
         }
-        else {
-            // 2. DEFAULT MODE
 
-            // Priority 1: Two-Hand Gestures
-            if (hands.length >= 2) {
-                for (const gesture of this.twoHandGestures) {
-                    if (gesture.check(hands, this.history)) {
-                        if (["WRIST_CROSS", "DUAL_SWIPE", "AIR_FRAME", "CURTAIN_OPEN"].includes(gesture.name)) {
-                            this.lockExpiry = currentTime + 3.0;
-                            this.lockingSource = "OTHER";
-                        }
-                        return this.emit(gesture.name);
+        // 5. ONE-HAND GESTURES (Strict Priority Chain)
+        for (const gesture of this.oneHandGestures) {
+            if (gesture.check([primaryHand], this.history)) {
+                // LOCK GESTURE
+                this.activeGestureName = gesture.name;
+                this.activeGestureStreak = 1;
+
+                if (gesture.name.startsWith("VOLUME:")) {
+                    this.lastVolumeVal = gesture.name;
+                }
+                
+                // GunTap triggers Menu Open
+                if (gesture.name === "GUN_TAP" && !this.inMenuMode) {
+                    if (currentTime - this.menuCooldown > 1.0) {
+                        this.inMenuMode = true;
+                        this.menuCooldown = currentTime;
+                        return this.emit("MENU_OPEN");
                     }
                 }
 
-                if (this.fistGesture.check([primaryHand], this.history)) {
-                    this.inMenuMode = false;
-                    return this.emit("GESTURE_CLOSE");
-                }
-
-                return null;
+                return this.emit(gesture.name);
             }
+        }
 
-            // Priority 2: Volume Dial
-            if (this.volumeDial.check([primaryHand], this.history)) {
-                this.lockExpiry = currentTime + 3.0;
-                this.lockingSource = "VOLUME";
-                const newVal = this.volumeDial.name;
-                if (newVal !== this.lastVolumeVal) {
-                    this.lastVolumeVal = newVal;
-                    return this.emit(newVal);
-                }
-                return newVal;
-            }
-
-            // Priority 3: Swipes
-            for (const swipe of this.swipes) {
-                if (swipe.check([primaryHand], this.history)) {
-                    return this.emit(swipe.name);
-                }
-            }
-
-            // Priority 4: Menu Trigger
-            if (this.gunTap.check([primaryHand], this.history)) {
-                if (currentTime - this.menuCooldown > 1.0) {
-                    this.inMenuMode = true;
-                    this.menuCooldown = currentTime;
-                    return this.emit("MENU_OPEN");
-                }
-            }
-
-            // Priority 5: Others
-            for (const gesture of this.oneHandGestures) {
-                if (gesture instanceof SwipeLeft || gesture instanceof VolumeDial || gesture instanceof GunTap || gesture instanceof SwipeRight || gesture instanceof SwipeUp || gesture instanceof SwipeDown || gesture instanceof VerticalSplit || gesture instanceof CursorMove) continue;
-
-                if (gesture.check([primaryHand], this.history)) {
-                    return this.emit(gesture.name);
-                }
+        // 6. SWIPES (Lowest priority, easily confused with movement)
+        for (const swipe of this.swipes) {
+            if (swipe.check([primaryHand], this.history)) {
+                this.activeGestureName = swipe.name;
+                return this.emit(swipe.name);
             }
         }
 
