@@ -136,7 +136,6 @@ function OscilloscopeRing({
 
 // ── Main VoiceAssistant (HUD Feedback Ring) ─────────────────────
 export default function VoiceAssistant() {
-  const { isWakeWordDetected, isLoaded, error: wakeWordError } = useWakeWord();
   const {
     isListening,
     transcript,
@@ -147,6 +146,8 @@ export default function VoiceAssistant() {
   const [displayTranscript, setDisplayTranscript] = useState('');
   const [isVisible, setIsVisible] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const isIdle = !isVisible && !isListening && !isPlaying;
+  const { isWakeWordDetected, isLoaded, error: wakeWordError } = useWakeWord(isIdle);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const ignoreNextResponse = useRef(false);
   const autoDismissTimer = useRef<NodeJS.Timeout | null>(null);
@@ -286,7 +287,6 @@ export default function VoiceAssistant() {
 
   // Always show the ring — it's the center of the OS
   const showRing = true;
-  const isIdle = !isVisible && !isListening && !isPlaying;
 
   return (
     <div className="flex flex-col items-center gap-4">

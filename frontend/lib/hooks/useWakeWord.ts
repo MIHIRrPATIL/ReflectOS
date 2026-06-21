@@ -1,68 +1,106 @@
 import { useState, useEffect, useRef } from 'react';
-import { PorcupineWorker } from '@picovoice/porcupine-web';
-import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
-const ACCESS_KEY = process.env.NEXT_PUBLIC_PICOVOICE_ACCESS_KEY;
-const KEYWORD = {
-    publicPath: '/WakeUpWord/alfred_en_wasm_v4_0_0.ppn',
-    label: 'Alfred',
-    sensitivity: 0.98,
-};
-const MODEL = {
-    publicPath: '/WakeUpWord/porcupine_params.pv',
-};
-
-export const useWakeWord = () => {
+export const useWakeWord = (isIdle: boolean = true) => {
     const [isWakeWordDetected, setIsWakeWordDetected] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const porcupineRef = useRef<PorcupineWorker | null>(null);
+    const recognitionRef = useRef<any>(null);
+    const activeRef = useRef(false);
 
     useEffect(() => {
-        if (!ACCESS_KEY) {
-            setError("Missing Picovoice Access Key");
+        if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+            setError("Web Speech API not supported in this browser.");
             return;
         }
 
-        const initPorcupine = async () => {
-            try {
-                const keywordDetectionCallback = (detection: any) => {
-                    if (detection.label === 'Alfred') {
-                        setIsWakeWordDetected(true);
-                        setTimeout(() => setIsWakeWordDetected(false), 1000);
-                    }
-                };
+        const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+        const rec = new SpeechRecognition();
+        rec.continuous = true;
+        rec.interimResults = true;
+        rec.lang = 'en-US';
+        recognitionRef.current = rec;
 
-                const processErrorCallback = (err: any) => {
-                    console.error("Porcupine error:", err);
-                    setError(err.toString());
-                };
+        rec.onstart = () => {
+            console.log("[WAKEWORD] Continuous SpeechRecognition started");
+            activeRef.current = true;
+        };
 
-                porcupineRef.current = await PorcupineWorker.create(
-                    ACCESS_KEY,
-                    KEYWORD,
-                    keywordDetectionCallback,
-                    MODEL
-                );
-
-                await WebVoiceProcessor.subscribe(porcupineRef.current);
-
-                setIsLoaded(true);
-            } catch (err: any) {
-                console.error("Porcupine initialization failed:", err);
-                setError(err.message || 'Failed to initialize wake word detection');
+        rec.onend = () => {
+            activeRef.current = false;
+            // Restart if it ended unexpectedly and we are still idle
+            if (isIdle) {
+                try {
+                    rec.start();
+                } catch (e) {
+                    console.error("[WAKEWORD] Failed to restart", e);
+                }
             }
         };
 
-        initPorcupine();
+        rec.onresult = (event: any) => {
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                const text = event.results[i][0].transcript.toLowerCase();
+                console.log("[WAKEWORD] Heard:", text);
+                if (text.includes("alfred")) {
+                    console.log("[WAKEWORD] Wake word 'Alfred' DETECTED!");
+                    setIsWakeWordDetected(true);
+                    
+                    // Stop recognition to release microphone for main assistant
+                    try {
+                        rec.stop();
+                    } catch (e) {}
+
+                    // Trigger detection state pulse
+                    setTimeout(() => setIsWakeWordDetected(false), 1000);
+                    break;
+                }
+            }
+        };
+
+        rec.onerror = (event: any) => {
+            console.error("[WAKEWORD] Error:", event.error);
+            if (event.error === 'not-allowed') {
+                setError("Microphone permission denied.");
+            }
+        };
+
+        setIsLoaded(true);
 
         return () => {
-            if (porcupineRef.current) {
-                porcupineRef.current.terminate();
-                WebVoiceProcessor.unsubscribe(porcupineRef.current);
+            if (recognitionRef.current) {
+                recognitionRef.current.onend = null;
+                try {
+                    recognitionRef.current.stop();
+                } catch (e) {}
             }
         };
     }, []);
+
+    // Control speech recognition activation based on isIdle status
+    useEffect(() => {
+        const rec = recognitionRef.current;
+        if (!rec) return;
+
+        if (isIdle) {
+            if (!activeRef.current) {
+                try {
+                    rec.start();
+                    console.log("[WAKEWORD] Activated listener");
+                } catch (e) {
+                    console.error("[WAKEWORD] Failed to start listener", e);
+                }
+            }
+        } else {
+            if (activeRef.current) {
+                try {
+                    rec.stop();
+                    console.log("[WAKEWORD] Deactivated listener");
+                } catch (e) {
+                    console.error("[WAKEWORD] Failed to stop listener", e);
+                }
+            }
+        }
+    }, [isIdle]);
 
     return { isWakeWordDetected, isLoaded, error };
 };
