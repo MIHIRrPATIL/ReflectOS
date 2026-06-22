@@ -6,6 +6,13 @@ export const useWakeWord = (isIdle: boolean = true) => {
     const [error, setError] = useState<string | null>(null);
     const recognitionRef = useRef<any>(null);
     const activeRef = useRef(false);
+    const shouldTriggerDetectionRef = useRef(false);
+    const isIdleRef = useRef(isIdle);
+
+    // Sync isIdle to ref to prevent stale closures in event handlers
+    useEffect(() => {
+        isIdleRef.current = isIdle;
+    }, [isIdle]);
 
     useEffect(() => {
         if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
@@ -27,8 +34,19 @@ export const useWakeWord = (isIdle: boolean = true) => {
 
         rec.onend = () => {
             activeRef.current = false;
+            
+            // If we stopped the wake-word session due to detecting 'Alfred', 
+            // trigger the state now that the microphone is fully released.
+            if (shouldTriggerDetectionRef.current) {
+                shouldTriggerDetectionRef.current = false;
+                console.log("[WAKEWORD] Mic released. Triggering wake word detection.");
+                setIsWakeWordDetected(true);
+                setTimeout(() => setIsWakeWordDetected(false), 1000);
+                return; // Do NOT restart background listening yet
+            }
+
             // Restart if it ended unexpectedly and we are still idle
-            if (isIdle) {
+            if (isIdleRef.current) {
                 try {
                     rec.start();
                 } catch (e) {
@@ -42,22 +60,24 @@ export const useWakeWord = (isIdle: boolean = true) => {
                 const text = event.results[i][0].transcript.toLowerCase();
                 console.log("[WAKEWORD] Heard:", text);
                 if (text.includes("alfred")) {
-                    console.log("[WAKEWORD] Wake word 'Alfred' DETECTED!");
-                    setIsWakeWordDetected(true);
+                    console.log("[WAKEWORD] Wake word 'Alfred' DETECTED! Stopping wake-word session to release mic...");
+                    shouldTriggerDetectionRef.current = true;
                     
                     // Stop recognition to release microphone for main assistant
                     try {
                         rec.stop();
                     } catch (e) {}
-
-                    // Trigger detection state pulse
-                    setTimeout(() => setIsWakeWordDetected(false), 1000);
                     break;
                 }
             }
         };
 
         rec.onerror = (event: any) => {
+            // Ignore 'aborted' errors when we manually stop recognition on detection
+            if (event.error === 'aborted') {
+                console.log("[WAKEWORD] Session aborted (expected on stop).");
+                return;
+            }
             console.error("[WAKEWORD] Error:", event.error);
             if (event.error === 'not-allowed') {
                 setError("Microphone permission denied.");
